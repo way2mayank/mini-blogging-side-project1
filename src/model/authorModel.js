@@ -3,22 +3,21 @@ const mongoose = require('mongoose');
 const authorSchema = new mongoose.Schema({
 
     fname: {
-        type: "String",
+        type: String,
         required: true
     },
     lname: {
-        type: "String",
+        type: String,
         required: true
     },
     title: {
-        type: "String",
+        type: String,
         required: true,
-        enum: ["Mr, Mrs, Miss"]
+        enum: ["Mr", "Mrs", "Miss"]
     }, email: {
-        type: "String",
+        type: String,
         required: true,
-        validate: [validateEmail, 'Please fill a valid email address'],
-        unique: true,
+        unique: true
     },
     password: {
         type: String,
@@ -26,4 +25,4 @@ const authorSchema = new mongoose.Schema({
     }
 },
     { timestamps: true });
-module.exports = mongoose.model('Author', authorSchema)
+module.exports = mongoose.model('AuthorBlogger', authorSchema)

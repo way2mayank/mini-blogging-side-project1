@@ -1,12 +1,12 @@
-const createBloggerModel = require("../Models/bloggerModel.js")
-const createAuthorModel = require("../Models/authorModel.js")
+const createBloggerModel = require("../model/blogModel.js")
+const createAuthorModel = require("../model/authorModel.js")
 
 const createBlog = async function(req,res){
     let data = req.body;
     let authorId = req.body.authorId
-    let checkAuthorId = await createAuthorModel.findById(authorId)
+    let checkAuthorId = await createAuthorModel.findById({authorId:authorId})
     if(!authorId){
-        res.status(401).send({status:false, msg:"please put authorId "})
+        res.status(401).send({status:false, msg:"please put authorId"})
     }	
     else if(!checkAuthorId){
         res.status(403).send({status:false, msg:"please enter a valid userId"})
@@ -21,6 +21,7 @@ const createBlog = async function(req,res){
 //     let category = req.query.category
 //     let tag = req.query.tag
 //     let subcategory = req.query.subcategory
+//     let author_Id = await createBloggerModel
     
 
 // }
