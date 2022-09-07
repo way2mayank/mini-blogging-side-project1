@@ -26,21 +26,21 @@ const blogSchema = new mongoose.Schema({
         type: [String],
         required: true
     },
-    //  examples: [technology, entertainment, life style, food, fashion]}, 
-    subcategory: {
-        type:
-            [String]
-    },
-    //  examples[technology-[web development, mobile development, AI, ML etc]] },
-    //  createdAt, updatedAt, deletedAt: {when the document is deleted},
+    subcategory: [String],
+    
     isDeleted: {
         type: Boolean,
         default: false
     },
-
+    deletedAt:{
+        type:Date
+    },
     isPublished: {
         type: Boolean,
         default: false
+    },
+    publishedAt:{
+        type:Date
     },
 },
     { timestamps: true });
