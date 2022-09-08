@@ -1,5 +1,5 @@
-const bloggerModel = require("../model/blogModel.js");
-const authorModel = require("../model/authorModel.js");
+const bloggerModel = require("../model/blogModel");
+const authorModel = require("../model/authorModel");
 
 const createBlog = async function (req, res) {
     try {
@@ -28,12 +28,6 @@ const createBlog = async function (req, res) {
 const getBlogs = async function (req, res) {
     try {
         let getQuery = req.query
-        // let match = await bloggerModel.find({$and: [{authorId:authorId },
-        // {category:category}]})
-        // if(!match){
-        //     return res.status(401).send({status:false, msg:"data not matched"})
-        // }
-        // if (getQuery.category!==category) return res.status(404).send({ status: false, msg: "getQuery is mandatory" })
 
         let data = await bloggerModel.find({ $and: [getQuery, { isDeleted: false }, { isPublished: true }] }).populate("authorId")
         if (!data) return res.status(404).send({ status: false, msg: "please use query" })
@@ -97,38 +91,11 @@ const deleteblog = async function (req, res) {
 const deletebyquery = async function (req, res) {
     let data = req.query
     let find = await bloggerModel.findOne(data)
+    // console.log(find)
     if (!find) { return res.status(404).send({ status: false, msg: "AuthorId is not valid" }) }
     if (find.isDeleted == true) { return res.status(400).send({ status: false, msg: "THIS DOCUMENT Is deleted" }) }
     let saved = await bloggerModel.findOneAndUpdate(data, { $set: { isDeleted: true } }, { new: true })
     return res.status(200).send({ status: true, msg: saved })
 
 }
-
-// const loginAuthor = async function (req , res){
-//     try{
-//        let data = req.body
-//        let user = await bloggerModel.findOne({email : data.email , password : data.password})
-//        if (user){
-//           let token = await jwt.sign({_id : user._id,email:user.email},'p-group49')
-//           res.header('x-api-key',token)
-//           return res.status(200).send({status:true,msg: 'token generated successfully'})
-//        }
-//        else {
-//           return res.status(401).send({status : false , msg : 'email or password is incorrect'})
-//        }
-//     }
-//     catch(err){
-//        return res.status(500).send(err.message)
-//     }
-//  }
-
-// let token = req.headers["x-api-key"]
-// let verifyToken = jwt.verify(token, "mini-project")
-//or
-// req.token = decoded
-
-
-
-
-
 module.exports = { createBlog, getBlogs, updateBlog, deleteblog, deletebyquery }

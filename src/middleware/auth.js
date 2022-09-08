@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken")
-const bloggerModel = require("../model/blogModel.js");
+const bloggerModel = require("../model/blogModel");
 
 const authentication = async function (req, res, next) {
     try {
@@ -21,7 +21,6 @@ const authorization = async function (req, res, next) {
     try {
 
         let blogId = req.params.blogId
-        // let blogId = req.query
         let blogg = await bloggerModel.findById(blogId)
         if (!blogg) {
             return res.status(404).send({ status: false, msg: "No blog found by this blogId" })
@@ -40,15 +39,14 @@ const authorization = async function (req, res, next) {
 const auth2 = async function(req,res,next){
     try {
         let token = req.headers["x-api-key"]
-let d  = jwt.verify(token, "mini-project")
-let b = req.query;
-let c = await bloggerModel.find(b)
-if(d.authorId!== c.authorId ){
+let decodedToken  = jwt.verify(token, "mini-project")
+let getData = req.query;
+let check = await bloggerModel.find(getData)
+if(decodedToken.authorId!=check.authorId ){
     return res.send("you are not auth")
 } else{
     next()
 }
-        
     } catch (error) {
         return res.status(500).send({status:false, msg:error.message})
     }
