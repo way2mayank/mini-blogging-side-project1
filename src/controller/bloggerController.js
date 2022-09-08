@@ -91,7 +91,6 @@ const deleteblog = async function (req, res) {
 const deletebyquery = async function (req, res) {
     let data = req.query
     let find = await bloggerModel.findOne(data)
-    // console.log(find)
     if (!find) { return res.status(404).send({ status: false, msg: "AuthorId is not valid" }) }
     if (find.isDeleted == true) { return res.status(400).send({ status: false, msg: "THIS DOCUMENT Is deleted" }) }
     let saved = await bloggerModel.findOneAndUpdate(data, { $set: { isDeleted: true } }, { new: true })
