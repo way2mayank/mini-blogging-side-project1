@@ -4,11 +4,11 @@ const authorModel = require("../model/authorModel");
 const createBlog = async function (req, res) {
     try {
         let data = req.body;
-        if (!data.body) return res.status(404).send({ status: false, msg: "body is mandatory" })
-        if (!data.title) return res.status(404).send({ status: false, msg: "please use title" })
-        if (!data.authorId) return res.status(404).send({ status: false, msg: "please use authorId" })
-        if (!data.category) return res.status(404).send({ status: false, msg: "please use category" })
-        let authorId = req.body.authorId
+        let {body, title, authorId, category} = data
+        if (!body) return res.status(404).send({ status: false, msg: "body is mandatory" })
+        if (!title) return res.status(404).send({ status: false, msg: "please use title" })
+        if (!authorId) return res.status(404).send({ status: false, msg: "please use authorId" })
+        if (!category) return res.status(404).send({ status: false, msg: "please use category" })
         if (authorId.length < 24 || authorId.length > 24) {
             return res.status(404).send({ status: false, msg: "invalid authorId's length" })
         }

@@ -6,16 +6,14 @@ const authorSchema = new mongoose.Schema({
         type: String,
         required: true,
         maxlength: 50,
-        trim: true,
-        uniqueCaseInsensitive: true
+        trim: true
+        // pattern:/^[A-Z]{1}[a-z]+$/
     },
     lname: {
         type: String,
         required: true,
-        index: true,
         maxlength: 25,
-        trim: true,
-        uniqueCaseInsensitive: true
+        trim: true
     },
     title: {
         type: String,

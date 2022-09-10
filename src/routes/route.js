@@ -19,4 +19,5 @@ router.delete("/blogs/:blogId", auth.authentication, auth.authorization, blogger
 //delete data/Update data By query param
 router.delete("/blogs", auth.authentication, auth.auth2, bloggerController.deletebyquery);
 
+
 module.exports = router;
