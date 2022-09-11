@@ -23,7 +23,7 @@ router.put("/blogs/:blogId", auth.authentication,auth.authorization, bloggerCont
 router.delete("/blogs/:blogId", auth.authentication, auth.authorization, bloggerController.deleteblog);
 
 //delete data/Update data By query param
-router.delete("/blogs", auth.authentication, auth.auth2, bloggerController.deletebyquery);
+router.delete("/blogs", auth.authentication, bloggerController.deletebyquery);
 
 
 module.exports = router;

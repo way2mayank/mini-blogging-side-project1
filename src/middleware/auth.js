@@ -44,25 +44,8 @@ const authorization = async function (req, res, next) {
 }
 
 
-//      authorization for query param    //
 
-const auth2 = async function(req,res,next){
-    try {
-        let token = req.headers["x-api-key"]
-let decodedToken  = jwt.verify(token, "mini-project")
-let getData = req.query;
-let check = await bloggerModel.find(getData)
-if(decodedToken.authorId!=check.authorId ){
-    return res.send("you are not auth")
-} else{
-    next()
-}
-    } catch (error) {
-        return res.status(500).send({status:false, msg:error.message})
-    }
-}
-
-module.exports = { authentication, authorization, auth2}
+module.exports = {authentication, authorization}
 
 
 

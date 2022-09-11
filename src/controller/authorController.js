@@ -2,12 +2,8 @@ const authorModel = require("../model/authorModel.js");
 const jwt = require("jsonwebtoken");
 const matchPass = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 const checkName=/^[a-z\s]+$/i
-
-// const checkName = /[^(A-Z)]+[a-z]+(?:(?:|['_\. ])([a-z](\.\D)?[a-z])+)$/
-///^[a-z]+$/i//////[^(A-Z)]+[a-z]+(?:(?:|['_\. ])([a-z](\.\D)?[a-z])+)$/ /////[A-Z]{1}[a-z]{2}[a-z]\D*/
 const emailMatch = /[a-zA-Z0-9_\-\.]+[@][a-z]+[\.][a-z]{2,3}/
-// const fName= fname.charAt(0).toUpperCase()+fname.slice(1).toLowerCase()
-// const lName= lname.charAt(0).toUpperCase()+lname.slice(1).toLowerCase()
+
 
 
 const createAuthor = async function (req, res) {
@@ -26,14 +22,6 @@ const createAuthor = async function (req, res) {
         if (!checkName.test(lname)) return res.status(404).send({ status: false, msg: "Use only alphabets" })
         const Lname= lname.charAt(0).toUpperCase()+lname.slice(1).toLowerCase()
         data.lname=Lname
-
-
-        // if (!fname || fname == "") return res.status(400).send({ status: false, msg: "please enter fname"})
-        // if (!checkName.test(fname)) return res.status(404).send({ status: false, msg: "please use correct fname to create author"})
-
-        
-        // if (!lname || lname=="") return res.status(404).send({ status: false, msg: "please use lname" })
-        // if (!checkName.test(lname)) return res.status(404).send({ status: false, msg: "please use correct lname to create author" })
 
         if (!title || title == "") return res.status(404).send({ status: false, msg: "please use title" })
         if (title!=="Mr" && title!=="Mrs" && title!=="Miss") return res.status(404).send({status:false, msg:"please use title correctly"})
