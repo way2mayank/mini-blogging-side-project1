@@ -7,7 +7,6 @@ const authorSchema = new mongoose.Schema({
         required: true,
         maxlength: 50,
         trim: true
-        // pattern:/^[A-Z]{1}[a-z]+$/
     },
     lname: {
         type: String,
@@ -18,7 +17,6 @@ const authorSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        enum: ["Mr", "Mrs", "Miss"],
         trim:true
     }, email: {
         type: String,

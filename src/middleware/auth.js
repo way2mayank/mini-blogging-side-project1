@@ -1,6 +1,9 @@
 const jwt = require("jsonwebtoken")
 const bloggerModel = require("../model/blogModel");
 
+
+//      authentication    //
+
 const authentication = async function (req, res, next) {
     try {
         let token = req.headers["x-api-key"]
@@ -10,6 +13,7 @@ const authentication = async function (req, res, next) {
                 return res.status(401).send({ msg: error.message })
             }
             req.token = decoded
+            console.log(decoded)
             next()
         })
     } catch (error) {
@@ -17,13 +21,15 @@ const authentication = async function (req, res, next) {
     }
 }
 
+//      authrorization for path param    //
+
 const authorization = async function (req, res, next) {
     try {
 
         let blogId = req.params.blogId
         let blogg = await bloggerModel.findById(blogId)
         if (!blogg) {
-            return res.status(404).send({ status: false, msg: "No blog found by this blogId" })
+            return res.status(404).send({ status: false, msg: "please enter valid Id"})
         }
         let author_Id = blogg.authorId.toString()
         let userToken = req.token.aurhorId
@@ -36,6 +42,10 @@ const authorization = async function (req, res, next) {
 
     }
 }
+
+
+//      authorization for query param    //
+
 const auth2 = async function(req,res,next){
     try {
         let token = req.headers["x-api-key"]

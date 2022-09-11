@@ -1,22 +1,30 @@
 const bloggerModel = require("../model/blogModel");
 const authorModel = require("../model/authorModel");
-
+const jwt = require("jsonwebtoken")
 const createBlog = async function (req, res) {
     try {
         let data = req.body;
+        
         let {body, title, authorId, category} = data
-        if (!body) return res.status(404).send({ status: false, msg: "body is mandatory" })
-        if (!title) return res.status(404).send({ status: false, msg: "please use title" })
+        
+        if (!body || body==" ") return res.status(404).send({ status: false, msg: "body is mandatory" })
+        
+        if (!title || title==" ") return res.status(404).send({ status: false, msg: "please use title" })
+        
         if (!authorId) return res.status(404).send({ status: false, msg: "please use authorId" })
-        if (!category) return res.status(404).send({ status: false, msg: "please use category" })
-        if (authorId.length < 24 || authorId.length > 24) {
-            return res.status(404).send({ status: false, msg: "invalid authorId's length" })
-        }
+        if (authorId.length < 24 || authorId.length > 24) return res.status(404).send({ status: false, msg: "please use valid authorId" })
+        
+        if (!category || category ==" ") return res.status(404).send({ status: false, msg: "please use category" })
+        
         let checkAuthorId = await authorModel.findById(authorId);
-        if (!checkAuthorId) {
-            return res.status(403).send({ status: false, msg: "please enter a valid userId" })
-        }
+        if (!checkAuthorId) return res.status(403).send({ status: false, msg: "please enter a valid authorId" })
+        
+        let token = req.headers["x-api-key"]
+        let decodedToken  = jwt.verify(token, "mini-project");
+        
+        if(decodedToken.aurhorId!==authorId) return res.status(404).send({status:false, msg:"please use correct Id"});
         let blogger = await bloggerModel.create(data)
+        
         return res.status(200).send({ status: true, msg: blogger })
 
     } catch (error) {
@@ -30,6 +38,7 @@ const getBlogs = async function (req, res) {
         let getQuery = req.query
 
         let data = await bloggerModel.find({ $and: [getQuery, { isDeleted: false }, { isPublished: true }] }).populate("authorId")
+        
         if (!data) return res.status(404).send({ status: false, msg: "please use query" })
         return res.status(200).send(data)
     } catch (error) {
@@ -40,8 +49,11 @@ const getBlogs = async function (req, res) {
 const updateBlog = async function (req, res) {
     try {
         let getId = req.params.blogId
+        
         let data = req.body
+        
         let updateId = await bloggerModel.findOne({ _id: getId })
+        
         if (updateId) {
             if (updateId.isDeleted === false) {
                 let update = await bloggerModel.findByIdAndUpdate(getId, { $push: { tags: data.tags, subcategory: data.subcategory }, title: data.title, body: data.body, category: data.category, isPublished: true, publishedAt: Date.now() }, { new: true })
@@ -64,10 +76,12 @@ const updateBlog = async function (req, res) {
 const deleteblog = async function (req, res) {
     try {
         let id = req.params.blogId
+        
         if (!id) {
             return res.status(404).send({ status: false, msg: "id not found" })
         }
         let blogid = await bloggerModel.findById(id)
+        
         if (!blogid) {
             return res.status(403).send("NOT A VALID BLOG ID")
         }
@@ -89,12 +103,20 @@ const deleteblog = async function (req, res) {
 
 
 const deletebyquery = async function (req, res) {
-    let data = req.query
+    try {
+        let data = req.query
+    
     let find = await bloggerModel.findOne(data)
+    
     if (!find) { return res.status(404).send({ status: false, msg: "AuthorId is not valid" }) }
+    
     if (find.isDeleted == true) { return res.status(400).send({ status: false, msg: "THIS DOCUMENT Is deleted" }) }
+    
     let saved = await bloggerModel.findOneAndUpdate(data, { $set: { isDeleted: true } }, { new: true })
     return res.status(200).send({ status: true, msg: saved })
-
+    } catch (error) {
+        
+    }
+    
 }
 module.exports = { createBlog, getBlogs, updateBlog, deleteblog, deletebyquery }
