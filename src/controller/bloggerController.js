@@ -114,7 +114,7 @@ const deletebyquery = async function (req, res) {
     try {
         let data = {}
         data = req.query
-        let authorId = req.token.aurhorId
+        let authorId = req.token.authorId
         data = { authorId: authorId }
 
         let find = await bloggerModel.findOne(data)

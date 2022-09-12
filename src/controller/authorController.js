@@ -53,7 +53,7 @@ const loginAuthor = async function (req, res) {
         if(!author) return res.status(404).send({status:false, msg:"please use correct email or password"})
         let token = jwt.sign(
             {
-                aurhorId: author._id.toString(),
+                authorId: author._id.toString(),
                 batch: "plutonium",
                 organisation: "FunctionUp",
             },
