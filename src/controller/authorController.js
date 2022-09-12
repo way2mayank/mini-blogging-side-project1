@@ -45,6 +45,10 @@ const createAuthor = async function (req, res) {
 const loginAuthor = async function (req, res) {
     try {
         let data = req.body
+        let {email, password} = data
+        if(Object.keys(data).length==0) return res.status(400).send({status:false, msg:"please use data to login"})
+        if(!email || !password) return res.status(400).send({status:false, msg:"please use email or password to login"})
+
         let author = await authorModel.findOne(data)
         if(!author) return res.status(404).send({status:false, msg:"please use correct email or password"})
         let token = jwt.sign(
@@ -56,7 +60,7 @@ const loginAuthor = async function (req, res) {
             "mini-project"
         );
         res.setHeader("x-api-key", token);
-        return res.status(201).send({ status: true, msg: "token generated successfully" })
+        return res.status(201).send({ status: true, msg: "token generated successfully", token })
     }
     catch (error) {
         return res.status(500).send(error.message)
