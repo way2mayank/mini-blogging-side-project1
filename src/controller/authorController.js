@@ -36,7 +36,7 @@ const createAuthor = async function (req, res) {
         if (!matchPass.test(password)) return res.status(404).send({ status: false, msg: "please use special character  to make strong password" })
 
         let savedData = await authorModel.create(data)
-        res.send({ msg: savedData })
+        res.status(201).send({ msg: savedData })
     } catch (error) {
         return res.status(500).send({ status: false, msg: error.message })
     }
@@ -56,7 +56,7 @@ const loginAuthor = async function (req, res) {
             "mini-project"
         );
         res.setHeader("x-api-key", token);
-        return res.status(200).send({ status: true, msg: "token generated successfully" })
+        return res.status(201).send({ status: true, msg: "token generated successfully" })
     }
     catch (error) {
         return res.status(500).send(error.message)

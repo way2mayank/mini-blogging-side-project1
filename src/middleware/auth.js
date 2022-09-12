@@ -29,7 +29,7 @@ const authorization = async function (req, res, next) {
         let blogId = req.params.blogId
         let blogg = await bloggerModel.findById(blogId)
         if (!blogg) {
-            return res.status(404).send({ status: false, msg: "please enter valid Id"})
+            return res.status(404).send({ status: false, msg: "please enter valid Id or token"})
         }
         let author_Id = blogg.authorId.toString()
         let userToken = req.token.aurhorId
