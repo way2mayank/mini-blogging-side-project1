@@ -8,7 +8,7 @@ const auth = require("../middleware/auth")
 router.post("/authors", authorController.createAuthor);
 
 //create Token/Login author
-router.post("/loginAuthor",authorController.loginAuthor);
+router.post("/login",authorController.loginAuthor);
 
 //create blog
 router.post("/blogs",bloggerController.createBlog);

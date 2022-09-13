@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mixed = mongoose.Schema.Types.Mixed
 
 const ObjectId = mongoose.Schema.Types.ObjectId
 
@@ -23,16 +24,16 @@ const blogSchema = new mongoose.Schema({
     },
 
     tags: {
-        type: [String],
+        type: mixed,
         trim: true
     },
 
     category: {
-        type: [String],
+        type: mixed,
         required: true,
         trim: true
     },
-    subcategory: [String],
+    subcategory: mixed,
 
     isDeleted: {
         type: Boolean,
