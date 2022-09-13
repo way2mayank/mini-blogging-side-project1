@@ -11,7 +11,7 @@ router.post("/authors", authorController.createAuthor);
 router.post("/login",authorController.loginAuthor);
 
 //create blog
-router.post("/blogs",bloggerController.createBlog);
+router.post("/blogs",bloggerController.createBlog);  
 
 //get blogs///
 router.get("/blogs",auth.authentication, bloggerController.getBlogs);

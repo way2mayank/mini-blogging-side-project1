@@ -142,13 +142,13 @@ const deleteblog = async function (req, res) {
 const deletebyquery = async function (req, res) {
     try {
         let data = {}
-        data = req.query
+         data = req.query
         let authorId = req.token.authorId
         data = { authorId: authorId }
-
+         
         let find = await bloggerModel.findOne(data)
 
-        if (!find) { return res.status(404).send({ status: false, msg: "AuthorId is not valid" }) }
+        if (!find) { return res.status(404).send({ status: false, msg: "no document match" }) }
 
         if (find.isDeleted == true) { return res.status(400).send({ status: false, msg: "THIS DOCUMENT Is deleted" }) }
 
@@ -167,12 +167,3 @@ module.exports = { createBlog, getBlogs, updateBlog, deleteblog, deletebyquery }
 
 
 
-// let token = req.headers["x-api-key"];
-// if(!token) return res.status(404).send({status:false, msg:"use token to create blog"});
-// let decodedToken = jwt.verify(token, "mini-project");
-        
-
-// if (decodedToken.authorId !== authorId) return res.status(404).send({ status: false, msg: "please use correct Id" });
-// let blogger = await bloggerModel.create(data)
-//if (!checkByRegex.test(subcategory)) return res.status(400).send({ status: false, msg: "use only alphabets in subcategory" })
-//if (!checkByRegex.test(tags)) return res.status(400).send({ status: false, msg: "use only alphabets in tags" })
